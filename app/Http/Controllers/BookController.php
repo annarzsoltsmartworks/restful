@@ -16,7 +16,7 @@ class BookController extends Controller
     public function index()
     {
         // Get books
-	    $books = Book::all();
+	    $books = Book::orderBy('created_at', 'desc')->paginate(5);
 
 	    return BookResource::collection($books);
     }
@@ -39,7 +39,16 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $book = new Book();
+
+        $book->title = $request->input('title');
+        $book->author = $request->input('author');
+        $book->release_year = $request->input('release_year');
+        $book->description = $request->input('description');
+
+        if($book->save()){
+        	return new BookResource($book);
+        }
     }
 
     /**
@@ -76,7 +85,16 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+	    $book = Book::findOrFail($id);
+
+	    $book->title = $request->input('title');
+	    $book->author = $request->input('author');
+	    $book->release_year = $request->input('release_year');
+	    $book->description = $request->input('description');
+
+	    if($book->save()){
+		    return new BookResource($book);
+	    }
     }
 
     /**
@@ -87,6 +105,11 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+	    // Get book
+	    $book = Book::findOrFail($id);
+
+	    if($book->delete()){
+	    	return new BookResource($book);
+	    }
     }
 }

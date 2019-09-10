@@ -6,6 +6,7 @@ window.Vue = require('vue');
 Vue.use(VueRouter)
 
 Vue.component('articles-list', require('./components/ArticlesComponent.vue').default);
+Vue.component('books-list', require('./components/BooksComponent.vue').default);
 
 import App from './views/App'
 import Home from './views/Home'
